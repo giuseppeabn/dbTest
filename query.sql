@@ -18,3 +18,24 @@ LEFT JOIN DOCENTE doc ON dic.USER_DOC_DICTA = doc.USER_DOC
 WHERE est.NRO_MATRICULA = @nro_matricula AND cur.SEMESTRE = @semestre
 GO
 EXEC firstProcedure @nro_matricula = 1, @semestre = 'primero';
+
+
+/*
+second exercise
+*/
+CREATE FUNCTION COUNTMODULOS 
+(@nro_matricula INT)
+RETURNS INT
+AS
+BEGIN
+    DECLARE @quantity INT    
+    SELECT @quantity = COUNT(mod.COD_MOD) 
+    FROM MODULO mod
+    LEFT JOIN CURSA cur ON mod.COD_MOD = cur.COD_MOD_CURSA
+    LEFT JOIN ESTUDIANTE est ON cur.NRO_MATRICULA_CURSA = est.NRO_MATRICULA
+    WHERE cur.ESTADO = 'aprobado' AND est.NRO_MATRICULA = 2
+    RETURN @quantity
+END
+GO
+
+SELECT dbo.COUNTMODULOS(1)
