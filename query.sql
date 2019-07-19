@@ -38,7 +38,7 @@ BEGIN
 END
 GO
 
-SELECT dbo.COUNTMODULOS(1)
+SELECT dbo.COUNTMODULOS(2)
 /*
 end second exercise
 */
@@ -47,21 +47,41 @@ end second exercise
 /*
 THIRD EXERCISE
 */
-CREATE FUNCTION AVERAGE_STUDENT_ 
+CREATE FUNCTION AVERAGE_STUDENT_3
 (@nro_matricula INT)
 RETURNS INT
 AS
 BEGIN
     DECLARE @average DECIMAL (2,1)   
-    SELECT @average = AVG(cur.NOTA_FINAL)
-    FROM ESTUDIANTE AS est
+    SELECT @average = AVG(cur.NOTA_FINAL) FROM ESTUDIANTE AS est
     LEFT JOIN CURSA cur ON est.NRO_MATRICULA = cur.NRO_MATRICULA_CURSA
-    WHERE est.NRO_MATRICULA = 1
+    WHERE est.NRO_MATRICULA = @nro_matricula
     RETURN @average
 END
 GO
 
-SELECT dbo.AVERAGE_STUDENT_(1)
+SELECT dbo.AVERAGE_STUDENT_3(3)
+
 /*
 END THIRD EXERCISE
+*/
+
+/*
+FOURTH EXERCISE
+*/
+CREATE PROCEDURE DETAIL_STUDENT_02 @nro_matricula INT
+AS
+BEGIN
+    DECLARE @cantMod INT
+    DECLARE @avgNote DECIMAL (2,1)
+    SET @cantMod = dbo.COUNTMODULOS(@nro_matricula)
+    SET @avgNote = dbo.AVERAGE_STUDENT_3(@nro_matricula)
+    SELECT est.NOMBRE, est.ANO_INGRESO,   @cantMod AS CANTIDAD_APROBADOS, @avgNote AS MODULO_APROBADO
+    FROM ESTUDIANTE AS est
+    WHERE est.NRO_MATRICULA = @nro_matricula
+END
+
+EXEC DETAIL_STUDENT_02 @nro_matricula = 5;
+/*
+END FOURTH EXERCISE
 */
