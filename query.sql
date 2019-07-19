@@ -85,3 +85,27 @@ EXEC DETAIL_STUDENT_02 @nro_matricula = 5;
 /*
 END FOURTH EXERCISE
 */
+
+
+/*
+FIFTH EXERCISE
+*/
+CREATE FUNCTION avgModulo (@codModulo VARCHAR (20), @semestre VARCHAR (20))
+RETURNS DECIMAL(2,1)
+BEGIN
+    DECLARE @average DECIMAL (2,1)  
+        SELECT @average = AVG(cur.NOTA_FINAL)
+        FROM CURSA AS cur
+        LEFT JOIN MODULO mod ON cur.COD_MOD_CURSA = mod.COD_MOD
+        WHERE cur.COD_MOD_CURSA = @codModulo AND cur.SEMESTRE = @semestre
+        GROUP BY mod.NOMBRE
+    RETURN @average
+END
+GO
+
+SELECT dbo.avgModulo('MOD1', 'primero')
+
+SELECT * FROM MODULO
+/*
+END FIFTH EXERCISE
+*/
