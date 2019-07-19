@@ -1,0 +1,20 @@
+
+
+CREATE PROCEDURE firstProcedure @nro_matricula INT, @semestre VARCHAR (20)
+AS
+SELECT est.NOMBRE,
+       cur.SEMESTRE, mod.NOMBRE AS
+       NOMBRE_MODULO,
+       imp.HORA,
+       sal.NOMBRE AS NOMBRE_SALA,
+       doc.NOMBRE AS NOMBRE_DOCENTE
+FROM ESTUDIANTE AS est 
+LEFT JOIN CURSA cur ON est.NRO_MATRICULA = cur.NRO_MATRICULA_CURSA
+LEFT JOIN MODULO mod ON cur.COD_MOD_CURSA = mod.COD_MOD
+LEFT JOIN IMPARTE imp ON mod.COD_MOD = imp.COD_MODULO_IMPARTE
+LEFT JOIN SALA sal ON imp.COD_SALA_IMPARTE = sal.COD_SALA
+LEFT JOIN DICTA dic ON dic.COD_MODULO_DICTA = mod.COD_MOD
+LEFT JOIN DOCENTE doc ON dic.USER_DOC_DICTA = doc.USER_DOC
+WHERE est.NRO_MATRICULA = @nro_matricula AND cur.SEMESTRE = @semestre
+GO
+EXEC firstProcedure @nro_matricula = 1, @semestre = 'primero';
